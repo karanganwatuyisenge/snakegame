@@ -1,15 +1,10 @@
-#Importing Modules
+# includes pause
 import pygame
 import sys
 import random
-import time
-from pygame.locals import *
-from pygame import mixer
 
-
-#Declaration of Variables
 pygame.init()
-FPS = 10
+FPS = 15
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
@@ -21,28 +16,27 @@ VELOCITY = 10
 SNAKE_WIDTH = 15
 APPLE_SIZE = 20
 TOP_WIDTH = 40
-small_font = pygame.font.SysFont('Courier New', 25)
-medium_font = pygame.font.SysFont('Courier New', 20, True)
-large_font = pygame.font.SysFont('Courier New', 40, True, True)
+small_font = pygame.font.SysFont('forte', 25)
+medium_font = pygame.font.SysFont('showcard gothic', 30, True)
+large_font = pygame.font.SysFont('chiller', 60, True, True)
 clock = pygame.time.Clock()
-
 
 canvas = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake Game')
-snake_img = pygame.image.load('head.png')
+snake_img = pygame.image.load('snake2.png')
 apple_img = pygame.image.load('apple2.png')
 tail_img = pygame.image.load('tail1.png')
 apple_img_rect = apple_img.get_rect()
 
+pygame.mixer.music.load('snake_theme.mp3')
 
-#Module In Starting Of The Game
 def start_game():
     canvas.fill(BLACK)
-    start_font1 = large_font.render("Welcome to snake game", True, BLUE)
-    start_font2 = medium_font.render("Play Game", True, BLACK, GREEN)
-    start_font3 = medium_font.render("Instructions", True, BLACK, GREEN)
-    start_font4 = medium_font.render("Quit", True, RED, GREEN)
-    start_font5=  medium_font.render("Levels",True,BLACK,GREEN)
+    start_font1 = large_font.render("Welcome to snake game", True, GREEN)
+    start_font2 = medium_font.render("Play Game", True, RED, YELLOW)
+    start_font3 = medium_font.render("Instructions", True, RED, YELLOW)
+    start_font4 = medium_font.render("Quit", True, RED, YELLOW)
+    start_font5 = medium_font.render("Creator", True, RED, YELLOW)
 
     start_font1_rect = start_font1.get_rect()
     start_font2_rect = start_font2.get_rect()
@@ -53,8 +47,8 @@ def start_game():
     start_font1_rect.center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - 100)
     start_font2_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT/2 + 50)
     start_font3_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT / 2 + 100)
-    start_font4_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT/2 + 150)
-    start_font5_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT/2 + 200)
+    start_font5_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT / 2 + 150)
+    start_font4_rect.center = (WINDOW_WIDTH/2 + 100, WINDOW_HEIGHT/2 + 200)
 
     canvas.blit(start_font1, start_font1_rect)
     canvas.blit(start_font2, start_font2_rect)
@@ -81,23 +75,58 @@ def start_game():
                 if x > start_font2_rect.left and x < start_font2_rect.right:
                     if y > start_font2_rect.top and y < start_font2_rect.bottom:
                         gameloop()
+                if x > start_font5_rect.left and x < start_font5_rect.right:
+                    if y > start_font5_rect.top and y < start_font5_rect.bottom:
+                        creator()
                 if x > start_font4_rect.left and x < start_font4_rect.right:
                     if y > start_font4_rect.top and y < start_font4_rect.bottom:
                         pygame.quit()
                         sys.exit()
 
+
         pygame.display.update()
 
 
+def creator():
+    canvas.fill(BLACK)
+    my_img = pygame.image.load('image1.jpg')
+    my_img_rect = my_img.get_rect()
+    my_img_rect.center = (WINDOW_WIDTH/2, my_img_rect.height/2 + 20)
+    canvas.blit(my_img, my_img_rect)
 
+    start_inst1 = large_font.render("Surya Prakash Reddy", False, GREEN)
+    start_inst1_rect = start_inst1.get_rect()
+    start_inst1_rect.center = (WINDOW_WIDTH/2, 420)
+    canvas.blit(start_inst1, start_inst1_rect)
+
+    start_inst2 = small_font.render("Hello guys, This is Surya. Thanks for playing my game.", True, BLUE)
+    start_inst3 = small_font.render("This is a very simple game, developed using python", True, BLUE)
+    start_inst4 = small_font.render("In case of queries, write to surajchinna1@gmail.com", True, BLUE)
+    canvas.blit(start_inst2, (10, 470))
+    canvas.blit(start_inst3, (10, 500))
+    canvas.blit(start_inst4, (10, 530))
+
+    start_inst5 = medium_font.render("<<BACK", True, RED, YELLOW)
+    start_inst5_rect = start_inst5.get_rect()
+    start_inst5_rect.center = (WINDOW_WIDTH - start_inst5_rect.width/2, WINDOW_HEIGHT - start_inst5_rect.height/2)
+    canvas.blit(start_inst5, start_inst5_rect)
+    pygame.display.update()
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if x > start_inst5_rect.left and x < start_inst5_rect.right:
+                    if y > start_inst5_rect.top and y < start_inst5_rect.bottom:
+                        start_game()
+        pygame.display.update()
 
-#Is For The Instruction
+
+
+
 def start_inst(start_font1, start_font1_rect):
     canvas.fill(BLACK)
     canvas.blit(start_font1, start_font1_rect)
@@ -115,7 +144,6 @@ def start_inst(start_font1, start_font1_rect):
     canvas.blit(start_inst4, (WINDOW_WIDTH/8, WINDOW_HEIGHT/2 + 90))
     canvas.blit(start_inst5, start_inst5_rect)
     pygame.display.update()
-
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -128,12 +156,8 @@ def start_inst(start_font1, start_font1_rect):
                         start_game()
         pygame.display.update()
 
-#Is For Game Over
+
 def gameover():
-    sound = mixer.Sound("resources/crash.mp3")
-    sound.play()
-    mixer.music.load('resources/bg_music_1.mp3')
-    mixer.music.stop()
     #canvas.fill(BLACK)
 
     font_gameover1 = large_font.render('GAME OVER', True, GREEN)
@@ -173,7 +197,7 @@ def gameover():
 
         pygame.display.update()
 
-#s For The Movement Of The Snake
+
 def snake(snakelist, direction):
 
     if direction == 'right':
@@ -195,13 +219,9 @@ def snake(snakelist, direction):
     for XnY in snakelist[1:-1]:
         pygame.draw.rect(canvas, BLUE, (XnY[0], XnY[1], SNAKE_WIDTH, SNAKE_WIDTH))
 
-    
 
-#Is For The “Pause” Function
 def game_paused():
-    mixer.music.load('resources/bg_music_1.mp3')
-    mixer.music.stop()
-    # canvas.fill(BLACK)
+    #canvas.fill(BLACK)
     paused_font1 = large_font.render("Game Paused", True, RED)
     paused_font_rect1 = paused_font1.get_rect()
     paused_font_rect1.center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
@@ -222,26 +242,22 @@ def game_paused():
                         return
         pygame.display.update()
 
-#for Game loop Function
+
 def gameloop():
-    mixer.music.load('resources/bg_music_1.mp3')
-    mixer.music.play(-1)
+
     while True:
+
+        pygame.mixer.music.play(-1, 0.0)
 
         LEAD_X = 0
         LEAD_Y = 100
         direction = 'right'
         score = small_font.render("Score:0", True, YELLOW)
-        level=small_font.render("Level:1", True,YELLOW )
         APPLE_X = random.randrange(0, WINDOW_WIDTH - 10, 10)
         APPLE_Y = random.randrange(TOP_WIDTH, WINDOW_HEIGHT - 10, 10)
         snakelist = []
         snakelength = 3
-        stage=1
-        # stageList=[]
-
         pause_font = medium_font.render('II', True, RED)
-
 
 
         while True:
@@ -311,30 +327,12 @@ def gameloop():
 
             snake(snakelist, direction)
             if snake_head_rect.colliderect(apple_rect):
-                sound = mixer.Sound("resources/ding.mp3")
-                sound.play()
                 APPLE_X = random.randrange(0, WINDOW_WIDTH - 10, 10)
                 APPLE_Y = random.randrange(TOP_WIDTH, WINDOW_HEIGHT - 10, 10)
                 snakelength += 1
                 score = small_font.render("Score:" + str(snakelength - 3), True, YELLOW)
-                
-
-
-            if score==10 and stage==1:
-                stage+=1
-                # LEAD_X+=4
-                level = small_font.render(f'Level{stage}', True, YELLOW)
-            if score==20 and stage==2:
-                stage+=2
-                # LEAD_X+=8
-                level = small_font.render(f'Level{stage}', True, YELLOW)
-            if score==30 and stage==3:
-                stage+=3
-                # LEAD_X+=12
-                level = small_font.render(f'Level{stage}', True, YELLOW)
 
             canvas.blit(score, (20, 10))
-            canvas.blit(level,(200,10))
             pygame.draw.line(canvas, GREEN, (0, TOP_WIDTH), (WINDOW_WIDTH, TOP_WIDTH))
             pygame.draw.line(canvas, YELLOW, (WINDOW_WIDTH - 60, 0), (WINDOW_WIDTH - 60, TOP_WIDTH))
             pygame.draw.rect(canvas, YELLOW, (WINDOW_WIDTH - 60, 0, 60, TOP_WIDTH))
