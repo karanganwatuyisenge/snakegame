@@ -173,6 +173,53 @@ def gameover():
 
         pygame.display.update()
 
+def congulaturation(high):
+    sound = mixer.Sound("resources/crash.mp3")
+    sound.play()
+    mixer.music.load('resources/bg_music_1.mp3')
+    mixer.music.stop()
+    #canvas.fill(BLACK)
+
+    font_gameover1 = large_font.render('Conglaturation', True, GREEN)
+    score = large_font.render('you score:'+str(high), True, GREEN)
+    font_gameover2 = medium_font.render("Play Again", True, RED, YELLOW)
+    font_gameover3 = medium_font.render("Quit", True, RED, YELLOW)
+
+    font_gameover1_rect = font_gameover1.get_rect()
+    score_rect = score.get_rect()
+    font_gameover2_rect = font_gameover2.get_rect()
+    font_gameover3_rect = font_gameover3.get_rect()
+
+
+    font_gameover1_rect.center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2 - 100)
+    score_rect.center =(WINDOW_WIDTH/2, WINDOW_HEIGHT/2-50 )
+    font_gameover2_rect.center = (WINDOW_WIDTH / 2 + 150, WINDOW_HEIGHT / 2 + 20)
+    font_gameover3_rect.center = (WINDOW_WIDTH / 2 + 150, WINDOW_HEIGHT / 2 + 70)
+
+
+    canvas.blit(font_gameover1, font_gameover1_rect)
+    canvas.blit(score, score_rect)
+    canvas.blit(font_gameover2, font_gameover2_rect)
+    canvas.blit(font_gameover3, font_gameover3_rect)
+    pygame.display.update()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                if x > font_gameover2_rect.left and x < font_gameover2_rect.right:
+                    if y > font_gameover2_rect.top and y < font_gameover2_rect.bottom:
+                        gameloop()
+                if x > font_gameover3_rect.left and x < font_gameover3_rect.right:
+                    if y > font_gameover3_rect.top and y < font_gameover3_rect.bottom:
+                        pygame.quit()
+                        sys.exit()
+
+
+        pygame.display.update()
 #s For The Movement Of The Snake
 def snake(snakelist, direction):
 
@@ -224,6 +271,7 @@ def game_paused():
 
 #for Game loop Function
 def gameloop():
+
     mixer.music.load('resources/bg_music_1.mp3')
     mixer.music.play(-1)
     while True:
@@ -241,9 +289,6 @@ def gameloop():
         # stageList=[]
 
         pause_font = medium_font.render('II', True, RED)
-
-
-
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -317,19 +362,20 @@ def gameloop():
                 APPLE_Y = random.randrange(TOP_WIDTH, WINDOW_HEIGHT - 10, 10)
                 snakelength += 1
                 score = small_font.render("Score:" + str(snakelength - 3), True, YELLOW)
-                
+                # level = small_font.render(f'Level{str(snakelength - 3)}', True, YELLOW)
 
 
-            if score==10 and stage==1:
+            if snakelength - 3==2 and stage==1:
                 stage+=1
                 # LEAD_X+=4
-                level = small_font.render(f'Level{stage}', True, YELLOW)
-            if score==20 and stage==2:
-                stage+=2
+                level = small_font.render(f'Level:{stage}', True, YELLOW)
+            if snakelength - 3==3 and stage==2:
+                stage+=1
                 # LEAD_X+=8
                 level = small_font.render(f'Level{stage}', True, YELLOW)
-            if score==30 and stage==3:
-                stage+=3
+            if snakelength - 3==5 and stage==3:
+                congulaturation(snakelength-3)
+                stage+=1
                 # LEAD_X+=12
                 level = small_font.render(f'Level{stage}', True, YELLOW)
 
