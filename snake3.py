@@ -365,15 +365,15 @@ def gameloop():
                 # level = small_font.render(f'Level{str(snakelength - 3)}', True, YELLOW)
 
 
-            if snakelength - 3==2 and stage==1:
+            if snakelength - 3==10 and stage==1:
                 stage+=1
                 # LEAD_X+=4
                 level = small_font.render(f'Level:{stage}', True, YELLOW)
-            if snakelength - 3==3 and stage==2:
+            if snakelength - 3==20 and stage==2:
                 stage+=1
                 # LEAD_X+=8
                 level = small_font.render(f'Level{stage}', True, YELLOW)
-            if snakelength - 3==5 and stage==3:
+            if snakelength - 3==30 and stage==3:
                 congulaturation(snakelength-3)
                 stage+=1
                 # LEAD_X+=12
